@@ -179,7 +179,7 @@ const ProjectsSection = () => {
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
-                variants={itemVariants}
+                // variants={itemVariants}
                 className="text-center p-4"
               >
                 <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
@@ -204,7 +204,7 @@ const ProjectsSection = () => {
           {projectCategories.map((category, index) => (
             <motion.div
               key={category.title}
-              variants={cardVariants}
+              // variants={cardVariants}
               whileHover={{
                 y: -8,
                 scale: 1.02,

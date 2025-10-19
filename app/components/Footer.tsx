@@ -112,7 +112,7 @@ const Footer = () => {
             className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12"
           >
             {/* Logo and Description */}
-            <motion.div variants={itemVariants} className="lg:col-span-1">
+            <motion.div className="lg:col-span-1">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-1 sm:p-2">
                   <Image
@@ -151,7 +151,7 @@ const Footer = () => {
             </motion.div>
 
             {/* Quick Links */}
-            <motion.div variants={itemVariants}>
+            <motion.div>
               <h3 className="text-lg font-semibold text-white mb-6">
                 Quick Links
               </h3>
@@ -171,7 +171,7 @@ const Footer = () => {
             </motion.div>
 
             {/* Resources */}
-            <motion.div variants={itemVariants}>
+            <motion.div>
               <h3 className="text-lg font-semibold text-white mb-6">
                 Resources
               </h3>
@@ -191,7 +191,7 @@ const Footer = () => {
             </motion.div>
 
             {/* Support & Newsletter */}
-            <motion.div variants={itemVariants}>
+            <motion.div>
               <h3 className="text-lg font-semibold text-white mb-6">Support</h3>
               <ul className="space-y-3 mb-6">
                 {support.map((link) => (

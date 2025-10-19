@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Target, Users, Award, Eye, Sparkles, Cpu } from "lucide-react";
+import { Brain, Award, Sparkles, Cpu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -182,8 +182,8 @@ const AboutSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
           >
-            We're pioneering the next generation of AI education, bridging the
-            gap between theoretical knowledge and real-world applications
+            We&apos;re pioneering the next generation of AI education, bridging
+            the gap between theoretical knowledge and real-world applications
             through hands-on projects and industry partnerships.
           </motion.p>
         </motion.div>

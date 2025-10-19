@@ -216,7 +216,7 @@ const TestimonialsSection = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentTestimonial}
-                variants={testimonialVariants}
+                // variants={testimonialVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
@@ -263,7 +263,7 @@ const TestimonialsSection = () => {
                         (_, i) => (
                           <motion.div
                             key={i}
-                            variants={starVariants}
+                            // variants={starVariants}
                             initial="hidden"
                             animate="visible"
                             transition={{ delay: 0.5 + i * 0.1 }}
@@ -291,7 +291,7 @@ const TestimonialsSection = () => {
                         transition={{ delay: 0.2 }}
                         className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed italic mb-6 px-2 sm:px-0"
                       >
-                        "{testimonials[currentTestimonial].content}"
+                        &quot;{testimonials[currentTestimonial].content}&quot;
                       </motion.blockquote>
                       <motion.div
                         initial={{ opacity: 0, scale: 0 }}
@@ -386,7 +386,7 @@ const TestimonialsSection = () => {
 
               {/* Content */}
               <blockquote className="text-slate-300 text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-3">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </blockquote>
 
               {/* Author */}

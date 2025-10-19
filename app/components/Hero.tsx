@@ -355,10 +355,10 @@ const HeroSection = () => {
                 projects.
               </p>
               <p className="text-base text-gray-500 leading-relaxed">
-                Join India's leading AI Institute with comprehensive programs in
-                Generative AI, Machine Learning, Data Science, and MLOps. Learn
-                from industry experts and build your career in the most exciting
-                field of technology.
+                Join India&apos;s leading AI Institute with comprehensive
+                programs in Generative AI, Machine Learning, Data Science, and
+                MLOps. Learn from industry experts and build your career in the
+                most exciting field of technology.
               </p>
             </motion.div>
 

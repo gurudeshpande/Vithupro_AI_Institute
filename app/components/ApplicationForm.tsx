@@ -163,7 +163,9 @@ const ApplicationForm = () => {
                     What happens next?
                   </h4>
                   <ul className="text-slate-600 space-y-1 text-sm">
-                    <li>• We'll review your application within 24 hours</li>
+                    <li>
+                      • We&apos;ll review your application within 24 hours
+                    </li>
                     <li>• Schedule a personalized counseling session</li>
                     <li>• Discuss your career goals and program fit</li>
                     <li>• Secure your seat in the upcoming cohort</li>

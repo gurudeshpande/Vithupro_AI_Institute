@@ -4,14 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import {
   ChevronDown,
-  ChevronUp,
-  HelpCircle,
   BookOpen,
   Users,
   Briefcase,
   Target,
   Clock,
-  Award,
 } from "lucide-react";
 
 const FAQSection = () => {
@@ -90,7 +87,7 @@ const FAQSection = () => {
       opacity: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
+        ease: [0.4, 0, 0.2, 1],
       },
     },
   };
@@ -214,7 +211,7 @@ const FAQSection = () => {
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
-              variants={itemVariants}
+              // variants={itemVariants}
               className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden hover:border-slate-600/50 transition-all duration-300 h-fit"
             >
               <button
@@ -241,7 +238,7 @@ const FAQSection = () => {
               <AnimatePresence>
                 {openFaq === index && (
                   <motion.div
-                    variants={accordionVariants}
+                    // variants={accordionVariants}
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
