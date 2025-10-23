@@ -176,7 +176,7 @@ const ProjectsSection = () => {
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto"
           >
-            {stats.map((stat, index) => (
+            {stats.map((stat) => (
               <motion.div
                 key={stat.label}
                 // variants={itemVariants}
@@ -201,7 +201,7 @@ const ProjectsSection = () => {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
         >
-          {projectCategories.map((category, index) => (
+          {projectCategories.map((category) => (
             <motion.div
               key={category.title}
               // variants={cardVariants}
@@ -339,14 +339,14 @@ const ProjectsSection = () => {
               ))}
             </div>
 
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
             >
               <span>View Complete Project Gallery</span>
               <ArrowRight className="w-5 h-5" />
-            </motion.button>
+            </motion.button> */}
           </div>
         </motion.div>
       </div>

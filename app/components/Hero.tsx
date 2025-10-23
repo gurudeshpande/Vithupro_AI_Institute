@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 const HeroSection = () => {
@@ -113,7 +113,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen py-4 sm:py-8 px-3 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="py-4 sm:py-8 px-3 sm:px-6 lg:px-8 overflow-hidden">
       {/* Slider Container */}
       <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] relative overflow-hidden rounded-xl sm:rounded-2xl">
         <AnimatePresence mode="wait" initial={false}>

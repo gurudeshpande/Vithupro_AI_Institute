@@ -10,8 +10,10 @@ import {
   Target,
   Clock,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const FAQSection = () => {
+  const router = useRouter();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const faqs = [
@@ -51,18 +53,6 @@ const FAQSection = () => {
         "All mentors are industry experts with 5+ years of experience in AI/ML roles at top tech companies.",
       icon: Users,
     },
-    // {
-    //   question: "What certificates will I receive?",
-    //   answer:
-    //     "Industry-recognized certificates for each program, plus project certifications for your portfolio.",
-    //   icon: Award,
-    // },
-    // {
-    //   question: "Can I pay in installments?",
-    //   answer:
-    //     "Yes, we offer flexible payment plans and EMI options to make learning accessible.",
-    //   icon: HelpCircle,
-    // },
   ];
 
   const toggleFaq = (index: number) => {
@@ -80,42 +70,28 @@ const FAQSection = () => {
     },
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: [0.4, 0, 0.2, 1],
-      },
-    },
-  };
-
-  const accordionVariants = {
-    hidden: {
-      opacity: 0,
-      height: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut",
-      },
-    },
-    visible: {
-      opacity: 1,
-      height: "auto",
-      transition: {
-        duration: 0.4,
-        ease: "easeInOut",
-      },
-    },
-  };
-
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-slate-900 overflow-hidden">
-      {/* Animated Background Elements */}
+      {/* Image Background with Overlay */}
       <div className="absolute inset-0">
-        {/* Floating circles */}
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/faq-bg.jpg')", // Replace with your image path
+          }}
+        />
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-slate-900/95" />
+
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+
+        {/* Additional Gradient Accents */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-transparent to-purple-600/5" />
+
+        {/* Floating circles - Adjusted opacity to work with image background */}
         <motion.div
           animate={{
             x: [0, 100, 0],
@@ -126,7 +102,7 @@ const FAQSection = () => {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -138,7 +114,7 @@ const FAQSection = () => {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="absolute top-3/4 right-1/3 w-48 h-48 bg-purple-500/5 rounded-full blur-3xl"
+          className="absolute top-3/4 right-1/3 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -150,11 +126,8 @@ const FAQSection = () => {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="absolute bottom-1/4 left-1/3 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl"
+          className="absolute bottom-1/4 left-1/3 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"
         />
-
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -211,15 +184,14 @@ const FAQSection = () => {
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
-              // variants={itemVariants}
-              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden hover:border-slate-600/50 transition-all duration-300 h-fit"
+              className="bg-slate-800/70 backdrop-blur-md rounded-2xl border border-slate-700/50 overflow-hidden hover:border-slate-600/50 transition-all duration-300 h-fit hover:bg-slate-800/80"
             >
               <button
                 onClick={() => toggleFaq(index)}
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-700/20 transition-colors duration-200"
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-700/30 transition-colors duration-200"
               >
                 <div className="flex items-center gap-4 flex-1">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/30 to-purple-500/30 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-500/20">
                     <faq.icon className="w-6 h-6 text-blue-400" />
                   </div>
                   <span className="text-lg font-semibold text-white text-left">
@@ -238,13 +210,13 @@ const FAQSection = () => {
               <AnimatePresence>
                 {openFaq === index && (
                   <motion.div
-                    // variants={accordionVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="border-t border-slate-700/50"
                   >
-                    <div className="p-6 bg-slate-800/30">
+                    <div className="p-6 bg-slate-800/40">
                       <p className="text-slate-300 leading-relaxed">
                         {faq.answer}
                       </p>
@@ -264,7 +236,7 @@ const FAQSection = () => {
           transition={{ delay: 0.6 }}
           className="text-center mt-12"
         >
-          <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 max-w-2xl mx-auto">
+          <div className="bg-slate-800/70 backdrop-blur-md rounded-2xl p-8 border border-slate-700/50 max-w-2xl mx-auto hover:bg-slate-800/80 transition-colors duration-300">
             <h3 className="text-2xl font-bold text-white mb-4">
               Still have questions?
             </h3>
@@ -276,6 +248,7 @@ const FAQSection = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => router.push("/contact")}
             >
               Contact Support
             </motion.button>

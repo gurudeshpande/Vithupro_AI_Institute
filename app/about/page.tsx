@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { useRouter } from "next/navigation";
 
 const Counter = ({
   value,
@@ -62,6 +63,8 @@ const Counter = ({
 };
 
 const AboutSection = () => {
+  const router = useRouter();
+
   const pillars = [
     {
       icon: Target,
@@ -207,9 +210,9 @@ const AboutSection = () => {
           </h2>
 
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            We equip the next generation of AI professionals with
-            industry-relevant skills, practical experience, and the mindset to
-            drive innovation in an AI-first world.
+            At Vithupro Institue we equip the next generation of AI
+            professionals with industry-relevant skills, practical experience,
+            and the mindset to drive innovation in an AI-first world.
           </p>
         </motion.div>
 
@@ -451,10 +454,16 @@ const AboutSection = () => {
               careers with our comprehensive programs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-6 sm:px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors duration-300 text-sm sm:text-base">
+              <button
+                className="px-6 sm:px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors duration-300 text-sm sm:text-base"
+                onClick={() => router.push("/courses")}
+              >
                 Explore Programs
               </button>
-              <button className="px-6 sm:px-8 py-3 border border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors duration-300 text-sm sm:text-base">
+              <button
+                className="px-6 sm:px-8 py-3 border border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors duration-300 text-sm sm:text-base"
+                onClick={() => router.push("/contact")}
+              >
                 Schedule Consultation
               </button>
             </div>

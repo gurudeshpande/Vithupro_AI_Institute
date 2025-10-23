@@ -83,9 +83,8 @@ const TestimonialsSection = () => {
     const interval = setInterval(() => {
       nextTestimonial();
     }, 5000);
-
     return () => clearInterval(interval);
-  }, []);
+  }, [nextTestimonial]); // Add nextTestimonial to dependencies
 
   // Fixed animations with consistent positioning
   const testimonialVariants = {

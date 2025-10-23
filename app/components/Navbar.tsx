@@ -35,52 +35,45 @@ const InstituteNavbar = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
-    // Get navbar height for mobile menu positioning
-    if (navbarRef.current) {
-      setNavbarHeight(navbarRef.current.offsetHeight);
-    }
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Update navbar height on resize
-  useEffect(() => {
-    const handleResize = () => {
+    const updateNavbarHeight = () => {
       if (navbarRef.current) {
         setNavbarHeight(navbarRef.current.offsetHeight);
       }
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    updateNavbarHeight();
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", updateNavbarHeight);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateNavbarHeight);
+    };
   }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const isOutsideMenu =
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+
+      if (
         mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target as Node);
-
-      const isOutsideHamburger =
+        !mobileMenuRef.current.contains(target) &&
         hamburgerRef.current &&
-        !hamburgerRef.current.contains(event.target as Node);
-
-      const isOutsideNavbar =
-        navbarRef.current && !navbarRef.current.contains(event.target as Node);
-
-      if (isOutsideMenu && isOutsideHamburger && isOutsideNavbar) {
+        !hamburgerRef.current.contains(target) &&
+        navbarRef.current &&
+        !navbarRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside as any);
+    document.addEventListener("touchstart", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside as any);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, []);
 
@@ -142,8 +135,8 @@ const InstituteNavbar = () => {
         ref={navbarRef}
         className={`sticky top-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-xl py-0"
-            : "bg-gradient-to-r from-white to-blue-50/30 shadow-lg py-0"
+            ? "bg-white/95 backdrop-blur-md shadow-xl"
+            : "bg-gradient-to-r from-white to-blue-50/30 shadow-lg"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -179,12 +172,12 @@ const InstituteNavbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:block">
-              <div className="ml-4 flex items-baseline space-x-1">
+              <div className="ml-4 flex items-center space-x-1">
                 {navItems.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
-                    className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                    className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
                       isActive(item.href)
                         ? "text-blue-600 bg-blue-50 border-b-2 border-blue-600"
                         : isScrolled
@@ -198,7 +191,7 @@ const InstituteNavbar = () => {
 
                 {/* CTA Button */}
                 <button
-                  className={`ml-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white`}
+                  className={`ml-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white whitespace-nowrap`}
                   onClick={() => router.push("/applynow")}
                 >
                   Apply Now
@@ -207,9 +200,9 @@ const InstituteNavbar = () => {
             </div>
 
             {/* Tablet/Mobile CTA Button */}
-            <div className="lg:hidden flex items-center space-x-2">
+            <div className="flex items-center space-x-2 lg:hidden">
               <button
-                className={`px-3 py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 transform hover:scale-105 ${
+                className={`px-3 py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 transform hover:scale-105 whitespace-nowrap ${
                   isScrolled
                     ? "bg-blue-600 text-white shadow-md"
                     : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md"
@@ -243,9 +236,9 @@ const InstituteNavbar = () => {
         <div
           ref={mobileMenuRef}
           className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ease-in-out ${
-            isOpen ? "opacity-100 visible" : "opacity-0 invisible delay-300"
+            isOpen ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
-          style={{ top: `${navbarHeight}px` }} // Dynamic top position based on navbar height
+          style={{ top: `${navbarHeight}px` }}
         >
           {/* Backdrop */}
           <div
@@ -257,7 +250,7 @@ const InstituteNavbar = () => {
 
           {/* Menu Content */}
           <div
-            className={`absolute right-0 top-0 w-80 sm:w-96 h-full bg-white/95 backdrop-blur-md shadow-2xl border-l border-gray-200 overflow-y-auto transform transition-transform duration-300 ${
+            className={`absolute right-0 top-0 w-full max-w-sm h-full bg-white/95 backdrop-blur-md shadow-2xl border-l border-gray-200 overflow-y-auto transform transition-transform duration-300 ${
               isOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
@@ -293,7 +286,7 @@ const InstituteNavbar = () => {
                       className="flex items-center space-x-3 text-sm text-gray-600 transition-transform duration-200 hover:translate-x-1"
                     >
                       <Icon className="h-4 w-4 flex-shrink-0" />
-                      <span className="text-sm">{item.text}</span>
+                      <span className="text-sm break-words">{item.text}</span>
                     </div>
                   );
                 })}
@@ -301,7 +294,7 @@ const InstituteNavbar = () => {
 
               {/* Additional Mobile CTA */}
               <button
-                className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg whitespace-nowrap"
                 onClick={() => {
                   router.push("/applynow");
                   handleMobileLinkClick();

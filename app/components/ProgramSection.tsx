@@ -96,8 +96,8 @@ const ProgramsSection = () => {
           </h2>
 
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            At Vithupro Instituite, we believe AI belongs to everyone. That's
-            why our courses are open to students from any stream.
+            At Vithupro Instituite, we believe AI belongs to everyone.
+            That&apos;s why our courses are open to students from any stream.
           </p>
         </div>
 
@@ -141,7 +141,7 @@ const ProgramsSection = () => {
 
                         {/* Points */}
                         <div className="space-y-2 mb-4 flex-1">
-                          {program.points.slice(0, 4).map((point, idx) => (
+                          {program.points.slice(0, 4).map((point) => (
                             <div
                               key={point}
                               className="flex items-center gap-3 text-slate-700 text-sm"
@@ -268,7 +268,7 @@ const ProgramsSection = () => {
 
                     {/* Points */}
                     <div className="space-y-2 mb-4 flex-1">
-                      {upcomingProgram.points.map((point, idx) => (
+                      {upcomingProgram.points.map((point) => (
                         <div
                           key={point}
                           className="flex items-center gap-3 text-slate-700 text-sm"

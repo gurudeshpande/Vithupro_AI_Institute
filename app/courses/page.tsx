@@ -22,10 +22,6 @@ import {
 } from "lucide-react";
 
 const ProgramsSection = () => {
-  const [selectedProgram, setSelectedProgram] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showComingSoonAlert, setShowComingSoonAlert] = useState(false);
-
   const programs = [
     {
       id: "python-ai",
@@ -181,6 +177,12 @@ const ProgramsSection = () => {
     },
   ];
 
+  const [selectedProgram, setSelectedProgram] = useState<(typeof programs)[0]>(
+    programs[0]
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showComingSoonAlert, setShowComingSoonAlert] = useState(false);
+
   const accentColors = {
     blue: {
       light: "bg-blue-50",
@@ -228,7 +230,7 @@ const ProgramsSection = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedProgram(null);
+    setSelectedProgram(programs[0]);
   };
 
   return (
@@ -252,8 +254,8 @@ const ProgramsSection = () => {
           </h2>
 
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            At Vithupro Institute, we believe AI belongs to everyone. That's why
-            our courses are open to students from any stream.
+            At Vithupro Institute, we believe AI belongs to everyone.
+            That&apos;s why our courses are open to students from any stream.
           </p>
         </div>
 
