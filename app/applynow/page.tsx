@@ -98,7 +98,7 @@ const ApplicationForm = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-8 text-center lg:text-left"
           >
             {/* Header */}
             <motion.div variants={itemVariants}>
@@ -136,7 +136,7 @@ const ApplicationForm = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 * index }}
-                  className="flex items-start gap-4 p-4 rounded-2xl bg-white/50 border border-slate-200/50 hover:border-blue-200/50 transition-all duration-300"
+                  className="flex flex-col lg:flex-row items-center lg:items-start gap-4 p-4 rounded-2xl bg-white/50 border border-slate-200/50 hover:border-blue-200/50 transition-all duration-300 text-center lg:text-left"
                 >
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
                     <feature.icon className="w-6 h-6 text-white" />
@@ -154,10 +154,10 @@ const ApplicationForm = () => {
             {/* Additional Info */}
             <motion.div
               variants={itemVariants}
-              className="bg-blue-50/50 rounded-2xl p-6 border border-blue-200/50"
+              className="bg-blue-50/50 rounded-2xl p-6 border border-blue-200/50 text-center lg:text-left"
             >
-              <div className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="flex flex-col lg:flex-row items-center lg:items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-blue-600 lg:mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-slate-900 mb-2">
                     What happens next?
@@ -197,7 +197,7 @@ const ApplicationForm = () => {
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               {/* Full Name */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3">
+                <label className="flex items-center justify-center lg:justify-start gap-2 text-sm font-semibold text-slate-700 mb-3">
                   <User className="w-4 h-4 text-blue-600" />
                   Full Name
                 </label>
@@ -207,14 +207,14 @@ const ApplicationForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Your name"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none text-center lg:text-left"
                   required
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3">
+                <label className="flex items-center justify-center lg:justify-start gap-2 text-sm font-semibold text-slate-700 mb-3">
                   <Mail className="w-4 h-4 text-blue-600" />
                   Email
                 </label>
@@ -224,14 +224,14 @@ const ApplicationForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="you@example.com"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none text-center lg:text-left"
                   required
                 />
               </div>
 
               {/* Phone */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3">
+                <label className="flex items-center justify-center lg:justify-start gap-2 text-sm font-semibold text-slate-700 mb-3">
                   <Phone className="w-4 h-4 text-blue-600" />
                   Phone
                 </label>
@@ -241,14 +241,14 @@ const ApplicationForm = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="8962623662"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none text-center lg:text-left"
                   required
                 />
               </div>
 
               {/* Program Selection */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3">
+                <label className="flex items-center justify-center lg:justify-start gap-2 text-sm font-semibold text-slate-700 mb-3">
                   <BookOpen className="w-4 h-4 text-blue-600" />
                   Program
                 </label>
@@ -256,7 +256,7 @@ const ApplicationForm = () => {
                   name="program"
                   value={formData.program}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none appearance-none bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none appearance-none bg-white text-center lg:text-left"
                 >
                   {programs.map((program) => (
                     <option key={program} value={program}>
@@ -268,7 +268,7 @@ const ApplicationForm = () => {
 
               {/* Message */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3">
+                <label className="flex items-center justify-center lg:justify-start gap-2 text-sm font-semibold text-slate-700 mb-3">
                   <MessageSquare className="w-4 h-4 text-blue-600" />
                   Message
                 </label>
@@ -278,7 +278,7 @@ const ApplicationForm = () => {
                   onChange={handleChange}
                   placeholder="Tell us about your goals"
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none resize-none text-center lg:text-left"
                 />
               </div>
 

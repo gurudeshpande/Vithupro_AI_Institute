@@ -10,8 +10,6 @@ import {
   Clock,
   CheckCircle,
   Loader2,
-  Menu,
-  X,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -24,7 +22,6 @@ const ContactUs = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -53,71 +50,38 @@ const ContactUs = () => {
   };
 
   return (
-    <section className="min-h-screen bg-white">
-      {/* Mobile Header */}
-      {/* <motion.header
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-50"
-      >
-        <div className="px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Image
-              width={40}
-              height={40}
-              src={"/logo.jpg"}
-              alt="LogoImage"
-              className="rounded-lg"
-            />
-            <div>
-              <h1 className="text-lg font-bold text-slate-900">
-                Vithupro Institute
-              </h1>
-              <p className="text-xs text-slate-600">Learn, Build, Sing</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-lg border border-slate-200"
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
-        </div>
-      </motion.header> */}
-
+    <section className="bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-          {/* Left Side - Content */}
-          <div className="bg-slate-50 py-8 lg:py-20 px-6 lg:px-12 flex flex-col justify-center order-2 lg:order-1">
+        <div className="flex flex-col lg:grid lg:grid-cols-2">
+          {/* Left Side - Content (First on Mobile) */}
+          <div className="bg-slate-50 py-8 lg:py-20 px-4 sm:px-6 lg:px-12 flex flex-col justify-center order-1">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="max-w-lg mx-auto lg:mx-0 w-full"
+              className="max-w-lg mx-auto lg:mx-0 w-full text-center lg:text-left"
             >
-              {/* Institute Name - Hidden on mobile, shown in header */}
+              {/* Institute Name - Mobile & Desktop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="mb-6 hidden lg:flex items-center gap-4"
+                className="mb-6 lg:mb-8 flex flex-col lg:flex-row items-center gap-4"
               >
                 <Image
-                  width={50}
-                  height={50}
+                  width={60}
+                  height={60}
                   src={"/logo.jpg"}
                   alt="LogoImage"
                   className="rounded-lg"
                 />
                 <div>
-                  <h1 className="text-3xl font-bold text-slate-900">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
                     Vithupro Institute
                   </h1>
-                  <p className="text-slate-600 text-lg">Learn, Build, Sing</p>
+                  <p className="text-slate-600 text-base sm:text-lg mt-1">
+                    Learn, Build, Ship
+                  </p>
                 </div>
               </motion.div>
 
@@ -129,33 +93,33 @@ const ContactUs = () => {
                 className="mb-8 lg:mb-12"
               >
                 <div className="border-b border-slate-300 pb-6 mb-6 lg:mb-8">
-                  <h2 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-3 lg:mb-4">
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-slate-900 mb-3 lg:mb-4">
                     Get in Touch
                   </h2>
-                  <h3 className="text-2xl lg:text-4xl xl:text-5xl font-bold text-slate-900 leading-tight mb-3 lg:mb-4">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 leading-tight mb-3 lg:mb-4">
                     Let&apos;s Start
                     <br />a conversation
                   </h3>
-                  <p className="text-slate-600 text-base lg:text-lg leading-relaxed">
+                  <p className="text-slate-600 text-sm sm:text-base lg:text-lg leading-relaxed">
                     Have questions about our AI programs? We&apos;re here to
                     help and guide you on your learning journey.
                   </p>
                 </div>
 
                 {/* Contact Information */}
-                <div className="space-y-6 lg:space-y-8">
-                  <div className="grid grid-cols-1 gap-6 lg:gap-8">
+                <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+                  <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:gap-8">
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.4 }}
                       className="bg-white p-4 rounded-lg shadow-sm border border-slate-200"
                     >
-                      <div className="flex items-start gap-3 mb-2">
-                        <div className="bg-blue-50 p-2 rounded-lg">
-                          <MapPin className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600" />
+                      <div className="flex flex-col sm:flex-row sm:items-start gap-3 text-center sm:text-left">
+                        <div className="bg-blue-50 p-2 rounded-lg mx-auto sm:mx-0">
+                          <MapPin className="w-5 h-5 text-blue-600" />
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <h4 className="font-semibold text-slate-900 text-base lg:text-lg">
                             Visit Us
                           </h4>
@@ -172,16 +136,16 @@ const ContactUs = () => {
                       transition={{ delay: 0.5 }}
                       className="bg-white p-4 rounded-lg shadow-sm border border-slate-200"
                     >
-                      <div className="flex items-start gap-3 mb-2">
-                        <div className="bg-green-50 p-2 rounded-lg">
-                          <Phone className="w-4 h-4 lg:w-5 lg:h-5 text-green-600" />
+                      <div className="flex flex-col sm:flex-row sm:items-start gap-3 text-center sm:text-left">
+                        <div className="bg-green-50 p-2 rounded-lg mx-auto sm:mx-0">
+                          <Phone className="w-5 h-5 text-green-600" />
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <h4 className="font-semibold text-slate-900 text-base lg:text-lg">
                             Call Us
                           </h4>
                           <p className="text-slate-600 text-sm lg:text-base mt-1">
-                            +1 (555) 123-4567
+                            +91 89626 23662
                           </p>
                         </div>
                       </div>
@@ -193,16 +157,16 @@ const ContactUs = () => {
                       transition={{ delay: 0.6 }}
                       className="bg-white p-4 rounded-lg shadow-sm border border-slate-200"
                     >
-                      <div className="flex items-start gap-3 mb-2">
-                        <div className="bg-purple-50 p-2 rounded-lg">
-                          <Mail className="w-4 h-4 lg:w-5 lg:h-5 text-purple-600" />
+                      <div className="flex flex-col sm:flex-row sm:items-start gap-3 text-center sm:text-left">
+                        <div className="bg-purple-50 p-2 rounded-lg mx-auto sm:mx-0">
+                          <Mail className="w-5 h-5 text-purple-600" />
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <h4 className="font-semibold text-slate-900 text-base lg:text-lg">
                             Email Us
                           </h4>
                           <p className="text-slate-600 text-sm lg:text-base mt-1">
-                            hello@vithupro.com
+                            aiinstitute@vithupro.in
                           </p>
                         </div>
                       </div>
@@ -214,11 +178,11 @@ const ContactUs = () => {
                       transition={{ delay: 0.7 }}
                       className="bg-white p-4 rounded-lg shadow-sm border border-slate-200"
                     >
-                      <div className="flex items-start gap-3 mb-2">
-                        <div className="bg-orange-50 p-2 rounded-lg">
-                          <Clock className="w-4 h-4 lg:w-5 lg:h-5 text-orange-600" />
+                      <div className="flex flex-col sm:flex-row sm:items-start gap-3 text-center sm:text-left">
+                        <div className="bg-orange-50 p-2 rounded-lg mx-auto sm:mx-0">
+                          <Clock className="w-5 h-5 text-orange-600" />
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <h4 className="font-semibold text-slate-900 text-base lg:text-lg">
                             Office Hours
                           </h4>
@@ -234,12 +198,12 @@ const ContactUs = () => {
             </motion.div>
           </div>
 
-          {/* Right Side - Form with Image Background */}
-          <div className="relative order-1 lg:order-2 min-h-[50vh] lg:min-h-screen">
-            {/* Background Image with overlay */}
-            <div className="absolute inset-0 bg-black/20 z-0" />
+          {/* Right Side - Form with Image Background (Second on Mobile) */}
+          <div className="relative order-2 lg:order-2 min-h-[50vh] sm:min-h-[60vh] lg:min-h-screen bg-slate-100 lg:bg-transparent">
+            {/* Background Image with overlay - Only show on desktop */}
+            <div className="absolute inset-0 bg-black/20 z-0 hidden lg:block" />
             <div
-              className="absolute inset-0 bg-cover bg-center z-0"
+              className="absolute inset-0 bg-cover bg-center z-0 hidden lg:block"
               style={{
                 backgroundImage: "url('/AI.jpg')",
                 opacity: 0.3,
@@ -247,15 +211,12 @@ const ContactUs = () => {
             />
 
             {/* Form Container */}
-            <div className="relative z-10 h-full flex items-center justify-center p-4 lg:p-8">
+            <div className="relative z-10 h-full flex items-center justify-center p-4 sm:p-6 lg:p-8">
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="bg-white rounded-xl lg:rounded-2xl shadow-lg lg:shadow-2xl border border-slate-200 p-6 lg:p-8 w-full max-w-md mx-auto -mt-8 lg:mt-0"
-                style={{
-                  marginTop: "-2rem", // Pulls form up on mobile
-                }}
+                className="bg-white rounded-xl lg:rounded-2xl shadow-lg lg:shadow-2xl border border-slate-200 p-4 sm:p-6 lg:p-8 w-full max-w-md mx-auto"
               >
                 <AnimatePresence mode="wait">
                   {isSubmitted ? (
@@ -277,7 +238,7 @@ const ContactUs = () => {
                       <h3 className="text-lg lg:text-xl font-bold text-slate-900 mb-2">
                         Message Sent!
                       </h3>
-                      <p className="text-slate-600 mb-6 text-sm lg:text-base">
+                      <p className="text-slate-600 mb-6 text-sm lg:text-base px-2">
                         Thank you for reaching out. We&apos;ll get back to you
                         within 24 hours.
                       </p>
@@ -311,7 +272,7 @@ const ContactUs = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="text-slate-600 text-center text-xs lg:text-sm mb-4 lg:mb-6"
+                        className="text-slate-600 text-center text-xs lg:text-sm mb-4 lg:mb-6 px-2"
                       >
                         Fill out the form below and we&apos;ll get back to you
                         soon.
