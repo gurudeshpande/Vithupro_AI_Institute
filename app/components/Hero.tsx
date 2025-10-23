@@ -1,22 +1,78 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import {
-  ArrowRight,
-  Play,
-  Users,
-  Clock,
-  Database,
-  Target,
-  Brain,
-  Sparkles,
-  Zap,
-  Shield,
-  Rocket,
-} from "lucide-react";
-
+import { useState, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 const HeroSection = () => {
+  const router = useRouter();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const slides = [
+    {
+      id: 1,
+      type: "video",
+      title: "Where Future AI Leaders Are Born",
+      highlighted: "AI Leaders",
+      description:
+        "Transforming ambitious learners into industry-ready AI professionals through cutting-edge curriculum and real-world projects.",
+      buttonText: "Explore Programs",
+      media: "/video.mp4", // Replace with your video path
+      poster: "/video.jpg", // Optional: poster image for video
+    },
+    {
+      id: 2,
+      type: "image",
+      title: "Master the Future of Technology",
+      highlighted: "Technology",
+      description:
+        "Immerse yourself in world-class AI education with hands-on projects and industry mentorship.",
+      buttonText: "Start Learning",
+      media: "/slide2.png",
+    },
+    {
+      id: 3,
+      type: "image",
+      title: "Build Your AI Career Journey",
+      highlighted: "AI Career",
+      description:
+        "From beginner to expert - our comprehensive programs guide you every step of the way.",
+      buttonText: "View Courses",
+      media: "/slide3.jpg",
+    },
+  ];
+
+  // Auto slide every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 7000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  // Handle video play/pause based on current slide
+  useEffect(() => {
+    if (slides[currentSlide].type === "video" && videoRef.current) {
+      videoRef.current.play().catch((error) => {
+        console.log("Video autoplay failed:", error);
+      });
+    }
+  }, [currentSlide, slides]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -39,449 +95,179 @@ const HeroSection = () => {
     },
   };
 
-  const stats = [
-    { icon: Users, number: "500+", label: "AI Engineers" },
-    { icon: Clock, number: "3 Years", label: "Excellence" },
-    { icon: Database, number: "200+", label: "AI Projects" },
-    { icon: Target, number: "98%", label: "Success Rate" },
-  ];
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Animated Background SVG Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Floating AI Circuit Pattern */}
-        <motion.svg
-          className="absolute top-10 left-10 w-24 h-24 text-blue-200/40"
-          viewBox="0 0 100 100"
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <path
-            d="M20,20 L80,20 L80,80 L20,80 Z M30,30 L70,30 L70,70 L30,70 Z"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeDasharray="5,5"
-          />
-          <circle cx="50" cy="50" r="8" fill="currentColor" opacity="0.3" />
-        </motion.svg>
+    <section className="min-h-screen py-4 sm:py-8 px-3 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Slider Container */}
+      <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] relative overflow-hidden rounded-xl sm:rounded-2xl">
+        <AnimatePresence mode="wait" initial={false}>
+          {slides.map(
+            (slide, index) =>
+              index === currentSlide && (
+                <motion.div
+                  key={slide.id}
+                  custom={1}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 },
+                  }}
+                  className="absolute inset-0"
+                >
+                  {/* Media Container */}
+                  <div className="absolute inset-0">
+                    {slide.type === "video" ? (
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        poster={slide.poster}
+                        className="w-full h-full object-cover"
+                      >
+                        <source src={slide.media} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <Image
+                        src={slide.media}
+                        alt={slide.title}
+                        fill
+                        className="object-cover"
+                        priority={index === 0}
+                      />
+                    )}
 
-        {/* Neural Network Nodes */}
-        <motion.svg
-          className="absolute top-1/4 right-20 w-32 h-32 text-purple-200/30"
-          viewBox="0 0 100 100"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
-          {[20, 50, 80].map((cx, i) =>
-            [20, 50, 80].map((cy, j) => (
-              <g key={`${i}-${j}`}>
-                <circle
-                  cx={cx}
-                  cy={cy}
-                  r="3"
-                  fill="currentColor"
-                  className="animate-pulse"
-                  style={{ animationDelay: `${(i + j) * 0.2}s` }}
-                />
-                {i < 2 && (
-                  <line
-                    x1={cx}
-                    y1={cy}
-                    x2={cx + 30}
-                    y2={cy}
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    opacity="0.5"
-                  />
-                )}
-                {j < 2 && (
-                  <line
-                    x1={cx}
-                    y1={cy}
-                    x2={cx}
-                    y2={cy + 30}
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    opacity="0.5"
-                  />
-                )}
-              </g>
-            ))
+                    {/* Dark Overlay - Only for image slides */}
+                    {slide.type === "image" && (
+                      <div className="absolute inset-0 bg-black/40"></div>
+                    )}
+
+                    {/* Semi-transparent overlay for video to ensure text readability */}
+                    {slide.type === "video" && (
+                      <div className="absolute inset-0 bg-black/20"></div>
+                    )}
+                  </div>
+
+                  {/* Content - Only show for image slides, hide for first video slide */}
+                  {slide.type === "image" && (
+                    <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8">
+                      <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="text-white space-y-4 sm:space-y-6 max-w-2xl w-full text-center"
+                      >
+                        <motion.h1
+                          variants={itemVariants}
+                          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+                        >
+                          {slide.title.split(slide.highlighted)[0]}
+                          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                            {slide.highlighted}
+                          </span>
+                          {slide.title.split(slide.highlighted)[1]}
+                        </motion.h1>
+
+                        <motion.div
+                          variants={itemVariants}
+                          className="space-y-3 sm:space-y-4"
+                        >
+                          <p className="text-base sm:text-xl md:text-2xl text-gray-200 leading-relaxed px-2">
+                            {slide.description}
+                          </p>
+                        </motion.div>
+
+                        <motion.div variants={itemVariants}>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-white text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg shadow-2xl hover:shadow-3xl transition-all duration-300"
+                            onClick={() => {
+                              router.push("/courses");
+                            }}
+                          >
+                            {slide.buttonText}
+                          </motion.button>
+                        </motion.div>
+                      </motion.div>
+                    </div>
+                  )}
+                </motion.div>
+              )
           )}
-        </motion.svg>
+        </AnimatePresence>
 
-        {/* Binary Code Rain */}
-        <motion.div
-          className="absolute top-0 left-0 w-full h-full opacity-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.1 }}
-          transition={{ delay: 1 }}
+        {/* Navigation Arrows - Always visible */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm rounded-full p-1 sm:p-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+          aria-label="Previous slide"
         >
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-green-400 font-mono text-xs"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: "-20px",
-              }}
-              animate={{
-                y: ["0vh", "100vh"],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: 15 + Math.random() * 10,
-                repeat: Infinity,
-                delay: Math.random() * 5,
-              }}
-            >
-              {Math.random() > 0.5 ? "1" : "0"}
-            </motion.div>
-          ))}
-        </motion.div>
+          <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-gray-700" />
+        </button>
 
-        {/* Floating Tech Icons */}
-        <motion.div
-          className="absolute bottom-20 left-20 w-16 h-16 text-cyan-200/20"
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, 5, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+        <button
+          onClick={nextSlide}
+          className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm rounded-full p-1 sm:p-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+          aria-label="Next slide"
         >
-          <svg viewBox="0 0 100 100" fill="currentColor">
-            <path d="M50,10 L90,50 L50,90 L10,50 Z M50,30 L70,50 L50,70 L30,50 Z" />
-          </svg>
-        </motion.div>
+          <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-gray-700" />
+        </button>
 
-        {/* Data Flow Lines */}
-        <motion.svg
-          className="absolute bottom-32 right-32 w-40 h-40 text-blue-300/20"
-          viewBox="0 0 100 100"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-        >
-          <motion.path
-            d="M10,50 Q50,10 90,50 Q50,90 10,50"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeDasharray="5,5"
-            animate={{
-              strokeDashoffset: [0, -20],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        </motion.svg>
-      </div>
-
-      {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-500"></div>
-
-      {/* 80% Width Container */}
-      <div className="max-w-[80%] mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Content */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100 bg-white group">
-              <Image
-                src="/heroimg.jpg"
-                alt="AI Institute - Future of Education"
-                width={600}
-                height={500}
-                className="w-full h-[400px] lg:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-
-              {/* Animated Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-              {/* AI Innovation Badge */}
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg px-3 py-2 shadow-lg backdrop-blur-sm"
-              >
-                <div className="flex items-center space-x-2">
-                  <Brain className="w-3 h-3" />
-                  <span className="text-xs font-semibold">
-                    AI Innovation Lab
-                  </span>
-                </div>
-              </motion.div>
-
-              {/* Excellence Badge */}
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm text-gray-800 rounded-lg px-3 py-2 shadow-lg border border-gray-200"
-              >
-                <div className="text-center">
-                  <div className="flex items-center justify-center space-x-1">
-                    <Sparkles className="w-3 h-3 text-yellow-500" />
-                    <div className="text-sm font-bold">Top Rated</div>
-                  </div>
-                  <div className="text-xs text-gray-600">AI Institute</div>
-                </div>
-              </motion.div>
-
-              {/* Interactive Tech Elements */}
-              <motion.div
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                whileHover={{ scale: 1.1 }}
-              >
-                <svg className="w-16 h-16 text-white/80" viewBox="0 0 100 100">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="40"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M30,50 L45,35 L65,55 L70,50"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </motion.div>
-            </div>
-
-            {/* Floating Background Element */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="absolute -z-10 top-4 -right-4 w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl"
-            ></motion.div>
-
-            {/* Decorative Corner Elements */}
-            <motion.svg
-              className="absolute -top-2 -left-2 w-8 h-8 text-blue-400"
-              viewBox="0 0 100 100"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.5 }}
-            >
-              <path
-                d="M0,0 L100,0 L100,100"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="8"
-              />
-            </motion.svg>
-            <motion.svg
-              className="absolute -bottom-2 -right-2 w-8 h-8 text-purple-400"
-              viewBox="0 0 100 100"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.5 }}
-            >
-              <path
-                d="M100,100 L0,100 L0,0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="8"
-              />
-            </motion.svg>
-          </motion.div>
-
-          {/* Right Side - Content */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="space-y-6"
-          >
-            {/* Institute Identity Badge */}
-            <motion.div
-              variants={itemVariants}
-              className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm text-gray-700 px-3 py-1 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
-            >
-              <motion.div
-                className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                animate={{
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                }}
-              ></motion.div>
-              <span>Premier AI Education Institute</span>
-            </motion.div>
-
-            {/* Main Heading */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
-            >
-              Where Future{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                AI Leaders
-              </span>{" "}
-              Are Born
-            </motion.h1>
-
-            {/* Sub Heading and Description - Tight spacing */}
-            <motion.div variants={itemVariants} className="space-y-3">
-              <p className="text-lg text-gray-600 leading-relaxed font-medium">
-                Transforming ambitious learners into industry-ready AI
-                professionals through cutting-edge curriculum and real-world
-                projects.
-              </p>
-              <p className="text-base text-gray-500 leading-relaxed">
-                Join India&apos;s leading AI Institute with comprehensive
-                programs in Generative AI, Machine Learning, Data Science, and
-                MLOps. Learn from industry experts and build your career in the
-                most exciting field of technology.
-              </p>
-            </motion.div>
-
-            {/* Stats - Compact */}
-            <motion.div
-              variants={itemVariants}
-              className="grid grid-cols-2 gap-3 py-2"
-            >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 + index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  className="text-center p-3 rounded-xl bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group"
-                >
-                  <stat.icon className="w-5 h-5 text-blue-600 mx-auto mb-1 group-hover:scale-110 transition-transform duration-300" />
-                  <div className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-                    {stat.number}
-                  </div>
-                  <div className="text-xs text-gray-600 font-medium">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* CTA Buttons - Compact */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-3 pt-2"
-            >
-              <motion.button
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 relative overflow-hidden"
-              >
-                {/* Animated background effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6 }}
-                />
-                <Brain className="w-4 h-4 relative z-10" />
-                <span className="relative z-10">Explore Programs</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                className="group bg-white/80 backdrop-blur-sm text-gray-700 px-6 py-3 rounded-lg font-semibold text-base border border-gray-300 shadow-sm hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 hover:border-blue-300 hover:text-blue-600"
-              >
-                <Play className="w-4 h-4" />
-                <span>Virtual Tour</span>
-              </motion.button>
-            </motion.div>
-
-            {/* Program Highlights - Compact */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap gap-2 pt-2"
-            >
-              {[
-                "Industry Certifications",
-                "1:1 Mentorship",
-                "Live Projects",
-                "Placement Assistance",
-                "Flexible Batches",
-                "Expert Faculty",
-              ].map((highlight, index) => (
-                <motion.div
-                  key={highlight}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.2 + index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center space-x-1 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-lg border border-gray-200 text-xs text-gray-600 hover:text-blue-600 hover:border-blue-200 transition-all duration-300"
-                >
-                  <motion.div
-                    className="w-1 h-1 bg-blue-500 rounded-full"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: index * 0.2,
-                    }}
-                  ></motion.div>
-                  <span className="font-medium">{highlight}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="text-gray-400 text-sm flex flex-col items-center"
-        >
-          <span className="text-xs">Discover More</span>
-          <svg className="w-3 h-3 mt-1 text-gray-400" viewBox="0 0 100 100">
-            <path
-              d="M50,20 L80,60 L50,80 L20,60 Z"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="8"
+        {/* Slide Indicators */}
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-1 sm:space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? "bg-blue-600 scale-125"
+                  : "bg-white/60 hover:bg-white/80"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
-          </svg>
-        </motion.div>
-      </motion.div>
+          ))}
+        </div>
+
+        {/* Optional: Add mute/unmute button for video slide */}
+        {slides[currentSlide].type === "video" && (
+          <button
+            onClick={() => {
+              if (videoRef.current) {
+                videoRef.current.muted = !videoRef.current.muted;
+              }
+            }}
+            className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 z-20 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+            aria-label="Toggle mute"
+          >
+            <span className="text-gray-700 text-sm font-medium">
+              {videoRef.current?.muted ? "🔇" : "🔊"}
+            </span>
+          </button>
+        )}
+      </div>
     </section>
   );
 };

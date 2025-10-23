@@ -1,52 +1,26 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Menu, X, Phone, Mail } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 const InstituteNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
+  const [navbarHeight, setNavbarHeight] = useState(0);
   const pathname = usePathname();
+  const router = useRouter();
   const navbarRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   const navItems = [
     { name: "Home", href: "/" },
-    {
-      name: "About Us",
-      href: "/about",
-      // dropdown: [
-      //   { name: "Our History", href: "/about/history" },
-      //   { name: "Vision & Mission", href: "/about/vision" },
-      //   { name: "Leadership", href: "/about/leadership" },
-      //   { name: "Accreditation", href: "/about/accreditation" },
-      // ],
-    },
-    {
-      name: "Academics",
-      href: "/academics",
-      dropdown: [
-        { name: "Programs", href: "/academics/programs" },
-        { name: "Courses", href: "/academics/courses" },
-        { name: "Faculty", href: "/academics/faculty" },
-        { name: "Research", href: "/academics/research" },
-      ],
-    },
-    {
-      name: "Admissions",
-      href: "/admissions",
-      // dropdown: [
-      //   { name: "Apply Now", href: "/admissions/apply" },
-      //   { name: "Requirements", href: "/admissions/requirements" },
-      //   { name: "Tuition & Fees", href: "/admissions/tuition" },
-      //   { name: "Scholarships", href: "/admissions/scholarships" },
-      // ],
-    },
-    { name: "Campus Life", href: "/campus-life" },
+    { name: "About Us", href: "/about" },
+    { name: "Courses", href: "/courses" },
+    { name: "Admissions", href: "/admissions" },
+    { name: "FAQ", href: "/faq" },
     { name: "Contact Us", href: "/contact" },
   ];
 
@@ -55,65 +29,90 @@ const InstituteNavbar = () => {
     { icon: Mail, text: "aiinstitute@vithupro.in" },
   ];
 
-  // Handle scroll effect
+  // Handle scroll effect and navbar height
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
+    // Get navbar height for mobile menu positioning
+    if (navbarRef.current) {
+      setNavbarHeight(navbarRef.current.offsetHeight);
+    }
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Update navbar height on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (navbarRef.current) {
+        setNavbarHeight(navbarRef.current.offsetHeight);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
+      const isOutsideMenu =
         mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target as Node) &&
-        navbarRef.current &&
-        !navbarRef.current.contains(event.target as Node)
-      ) {
+        !mobileMenuRef.current.contains(event.target as Node);
+
+      const isOutsideHamburger =
+        hamburgerRef.current &&
+        !hamburgerRef.current.contains(event.target as Node);
+
+      const isOutsideNavbar =
+        navbarRef.current && !navbarRef.current.contains(event.target as Node);
+
+      if (isOutsideMenu && isOutsideHamburger && isOutsideNavbar) {
         setIsOpen(false);
-        setMobileDropdown(null);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside as any);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside as any);
+    };
   }, []);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
     }
 
     return () => {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
     };
   }, [isOpen]);
 
+  // Close menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   const isActive = (href: string) => pathname === href;
 
-  const toggleMobileDropdown = (itemName: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setMobileDropdown(mobileDropdown === itemName ? null : itemName);
-  };
-
-  const handleMobileLinkClick = (href: string, hasDropdown: boolean) => {
-    if (!hasDropdown) {
-      setIsOpen(false);
-      setMobileDropdown(null);
-    }
-  };
-
-  const handleDropdownLinkClick = () => {
+  const handleMobileLinkClick = () => {
     setIsOpen(false);
-    setMobileDropdown(null);
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -182,55 +181,25 @@ const InstituteNavbar = () => {
             <div className="hidden lg:block">
               <div className="ml-4 flex items-baseline space-x-1">
                 {navItems.map((item) => (
-                  <div
+                  <a
                     key={item.name}
-                    className="relative"
-                    onMouseEnter={() =>
-                      item.dropdown && setActiveDropdown(item.name)
-                    }
-                    onMouseLeave={() => setActiveDropdown(null)}
+                    href={item.href}
+                    className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                      isActive(item.href)
+                        ? "text-blue-600 bg-blue-50 border-b-2 border-blue-600"
+                        : isScrolled
+                        ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
+                        : "text-gray-800 hover:text-blue-700 hover:bg-white/80"
+                    }`}
                   >
-                    <a
-                      href={item.href}
-                      className={`flex items-center px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                        isActive(item.href)
-                          ? "text-blue-600 bg-blue-50 border-b-2 border-blue-600"
-                          : isScrolled
-                          ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
-                          : "text-gray-800 hover:text-blue-700 hover:bg-white/80"
-                      }`}
-                    >
-                      {item.name}
-                      {item.dropdown && (
-                        <ChevronDown
-                          className={`ml-1 h-4 w-4 transition-transform duration-300 ${
-                            activeDropdown === item.name ? "rotate-180" : ""
-                          }`}
-                        />
-                      )}
-                    </a>
-
-                    {/* Desktop Dropdown Menu */}
-                    {item.dropdown && activeDropdown === item.name && (
-                      <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-gray-100 py-2 z-50 animate-in fade-in-0 zoom-in-95 duration-200">
-                        {item.dropdown.map((dropdownItem) => (
-                          <a
-                            key={dropdownItem.name}
-                            href={dropdownItem.href}
-                            className="flex items-center px-4 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 transition-all duration-300 group"
-                          >
-                            <div className="w-1 h-6 bg-blue-600 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            {dropdownItem.name}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                    {item.name}
+                  </a>
                 ))}
 
                 {/* CTA Button */}
                 <button
                   className={`ml-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white`}
+                  onClick={() => router.push("/applynow")}
                 >
                   Apply Now
                 </button>
@@ -245,17 +214,20 @@ const InstituteNavbar = () => {
                     ? "bg-blue-600 text-white shadow-md"
                     : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md"
                 }`}
+                onClick={() => router.push("/applynow")}
               >
                 Apply
               </button>
               <button
-                onClick={() => setIsOpen(!isOpen)}
+                ref={hamburgerRef}
+                onClick={toggleMenu}
                 className={`inline-flex items-center justify-center p-2 rounded-xl transition-all duration-300 ${
                   isScrolled
                     ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                     : "text-gray-800 hover:text-blue-700 hover:bg-white/80"
                 }`}
                 aria-label="Toggle menu"
+                aria-expanded={isOpen}
               >
                 {isOpen ? (
                   <X className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -270,75 +242,42 @@ const InstituteNavbar = () => {
         {/* Mobile Navigation Menu */}
         <div
           ref={mobileMenuRef}
-          className={`lg:hidden fixed inset-0 top-[88px] sm:top-[104px] z-40 transform transition-transform duration-300 ease-in-out ${
-            isOpen ? "translate-x-0" : "translate-x-full"
+          className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ease-in-out ${
+            isOpen ? "opacity-100 visible" : "opacity-0 invisible delay-300"
           }`}
+          style={{ top: `${navbarHeight}px` }} // Dynamic top position based on navbar height
         >
           {/* Backdrop */}
           <div
             className={`absolute inset-0 bg-black transition-opacity duration-300 ${
               isOpen ? "opacity-50" : "opacity-0"
             }`}
-            onClick={() => {
-              setIsOpen(false);
-              setMobileDropdown(null);
-            }}
+            onClick={() => setIsOpen(false)}
           />
 
           {/* Menu Content */}
-          <div className="absolute right-0 top-0 w-80 sm:w-96 h-full bg-white/95 backdrop-blur-md shadow-2xl border-l border-gray-200 overflow-y-auto">
+          <div
+            className={`absolute right-0 top-0 w-80 sm:w-96 h-full bg-white/95 backdrop-blur-md shadow-2xl border-l border-gray-200 overflow-y-auto transform transition-transform duration-300 ${
+              isOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
             <div className="p-4 space-y-1">
               {navItems.map((item) => (
                 <div
                   key={item.name}
                   className="border-b border-gray-100 last:border-b-0"
                 >
-                  <div className="flex flex-col">
-                    <div className="flex items-center justify-between">
-                      <a
-                        href={item.href}
-                        className={`flex-1 flex items-center px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${
-                          isActive(item.href)
-                            ? "text-blue-600 bg-blue-50 border-r-4 border-blue-600"
-                            : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
-                        }`}
-                        onClick={() =>
-                          handleMobileLinkClick(item.href, !!item.dropdown)
-                        }
-                      >
-                        {item.name}
-                      </a>
-                      {item.dropdown && (
-                        <button
-                          onClick={(e) => toggleMobileDropdown(item.name, e)}
-                          className="p-2 mr-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-                          aria-label={`Toggle ${item.name} dropdown`}
-                        >
-                          <ChevronDown
-                            className={`h-4 w-4 transition-transform duration-300 ${
-                              mobileDropdown === item.name ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Mobile Dropdown */}
-                    {item.dropdown && mobileDropdown === item.name && (
-                      <div className="ml-6 mt-1 mb-2 space-y-1 bg-gray-50/50 rounded-lg p-2 animate-in fade-in-0 slide-in-from-top-1 duration-200">
-                        {item.dropdown.map((dropdownItem) => (
-                          <a
-                            key={dropdownItem.name}
-                            href={dropdownItem.href}
-                            className="block px-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors duration-300 transform hover:translate-x-1"
-                            onClick={handleDropdownLinkClick}
-                          >
-                            {dropdownItem.name}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <a
+                    href={item.href}
+                    className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${
+                      isActive(item.href)
+                        ? "text-blue-600 bg-blue-50 border-r-4 border-blue-600"
+                        : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
+                    }`}
+                    onClick={handleMobileLinkClick}
+                  >
+                    {item.name}
+                  </a>
                 </div>
               ))}
             </div>
@@ -364,8 +303,8 @@ const InstituteNavbar = () => {
               <button
                 className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg"
                 onClick={() => {
-                  setIsOpen(false);
-                  setMobileDropdown(null);
+                  router.push("/applynow");
+                  handleMobileLinkClick();
                 }}
               >
                 Apply for Admission
