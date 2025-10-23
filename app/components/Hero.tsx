@@ -10,39 +10,42 @@ const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const slides = [
-    {
-      id: 1,
-      type: "video",
-      title: "Where Future AI Leaders Are Born",
-      highlighted: "AI Leaders",
-      description:
-        "Transforming ambitious learners into industry-ready AI professionals through cutting-edge curriculum and real-world projects.",
-      buttonText: "Explore Programs",
-      media: "/video.mp4", // Replace with your video path
-      poster: "/video.jpg", // Optional: poster image for video
-    },
-    {
-      id: 2,
-      type: "image",
-      title: "Master the Future of Technology",
-      highlighted: "Technology",
-      description:
-        "Immerse yourself in world-class AI education with hands-on projects and industry mentorship.",
-      buttonText: "Start Learning",
-      media: "/slide2.png",
-    },
-    {
-      id: 3,
-      type: "image",
-      title: "Build Your AI Career Journey",
-      highlighted: "AI Career",
-      description:
-        "From beginner to expert - our comprehensive programs guide you every step of the way.",
-      buttonText: "View Courses",
-      media: "/slide3.jpg",
-    },
-  ];
+  const slides = useMemo(
+    () => [
+      {
+        id: 1,
+        type: "video",
+        title: "Where Future AI Leaders Are Born",
+        highlighted: "AI Leaders",
+        description:
+          "Transforming ambitious learners into industry-ready AI professionals through cutting-edge curriculum and real-world projects.",
+        buttonText: "Explore Programs",
+        media: "/video.mp4", // Replace with your video path
+        poster: "/video.jpg", // Optional: poster image for video
+      },
+      {
+        id: 2,
+        type: "image",
+        title: "Master the Future of Technology",
+        highlighted: "Technology",
+        description:
+          "Immerse yourself in world-class AI education with hands-on projects and industry mentorship.",
+        buttonText: "Start Learning",
+        media: "/slide2.png",
+      },
+      {
+        id: 3,
+        type: "image",
+        title: "Build Your AI Career Journey",
+        highlighted: "AI Career",
+        description:
+          "From beginner to expert - our comprehensive programs guide you every step of the way.",
+        buttonText: "View Courses",
+        media: "/slide3.jpg",
+      },
+    ],
+    []
+  );
 
   // Auto slide every 10 seconds
   useEffect(() => {

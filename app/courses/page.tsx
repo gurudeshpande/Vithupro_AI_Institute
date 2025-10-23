@@ -6,23 +6,58 @@ import {
   IndianRupee,
   Clock,
   UserCheck,
-  ArrowRight,
-  Calendar,
-  ChevronRight,
-  Users,
   BookOpen,
-  Briefcase,
-  Globe,
   Award,
   Star,
   Zap,
   Check,
   X,
   AlertCircle,
+  Calendar,
 } from "lucide-react";
 
+// Define proper TypeScript interfaces
+interface Instructor {
+  name: string;
+  role: string;
+  experience: string;
+  specialization: string;
+}
+
+interface Phase {
+  title: string;
+  modules: string[];
+}
+
+interface BatchInfo {
+  nextBatch: string;
+  seats: string;
+  schedule: string;
+  mode: string;
+}
+
+interface Program {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  fee: string;
+  audience: string;
+  gradient: string;
+  accent: string;
+  status: string;
+  link?: string;
+  fullDescription?: string;
+  phases?: Phase[];
+  features?: string[];
+  outcomes?: string[];
+  eligibility?: string[];
+  instructors?: Instructor[];
+  batchInfo?: BatchInfo;
+}
+
 const ProgramsSection = () => {
-  const programs = [
+  const programs: Program[] = [
     {
       id: "python-ai",
       title: "Python Generative AI & Agentic AI",
@@ -33,13 +68,10 @@ const ProgramsSection = () => {
       audience: "Science & Engineering Students",
       gradient: "from-blue-600 to-purple-600",
       accent: "blue",
-      status: "available", // Available course
+      status: "available",
       link: "/programs/bsc-ai",
-
-      // Detailed Information
       fullDescription:
         "This comprehensive program takes you from absolute beginner to AI expert. Master Python programming, dive deep into Generative AI technologies, and learn to build sophisticated Agentic AI systems that can automate complex tasks and make intelligent decisions.",
-
       phases: [
         {
           title: "Phase 1: Python Foundations (Zero to Pro)",
@@ -116,7 +148,6 @@ const ProgramsSection = () => {
           ],
         },
       ],
-
       features: [
         "10+ Real-world Projects",
         "1:1 Mentorship Sessions",
@@ -125,7 +156,6 @@ const ProgramsSection = () => {
         "Industry Certifications",
         "GitHub Portfolio Development",
       ],
-
       outcomes: [
         "Build and deploy AI applications",
         "Create intelligent AI agents",
@@ -133,14 +163,12 @@ const ProgramsSection = () => {
         "Develop production-ready AI systems",
         "Prepare for AI engineering roles",
       ],
-
       eligibility: [
         "Basic computer knowledge",
         "No prior programming experience required",
         "Science/Engineering background preferred",
         "Strong logical thinking ability",
       ],
-
       instructors: [
         {
           name: "Dr. Rajesh Kumar",
@@ -155,7 +183,6 @@ const ProgramsSection = () => {
           specialization: "MLOps & Cloud AI",
         },
       ],
-
       batchInfo: {
         nextBatch: "15 January 2024",
         seats: "Limited to 30 students",
@@ -173,13 +200,11 @@ const ProgramsSection = () => {
       audience: "All Streams",
       gradient: "from-green-600 to-teal-600",
       accent: "emerald",
-      status: "coming-soon", // Coming soon course
+      status: "coming-soon",
     },
   ];
 
-  const [selectedProgram, setSelectedProgram] = useState<(typeof programs)[0]>(
-    programs[0]
-  );
+  const [selectedProgram, setSelectedProgram] = useState<Program>(programs[0]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showComingSoonAlert, setShowComingSoonAlert] = useState(false);
 
@@ -218,7 +243,7 @@ const ProgramsSection = () => {
     },
   };
 
-  const openModal = (program: any) => {
+  const openModal = (program: Program) => {
     if (program.status === "coming-soon") {
       setShowComingSoonAlert(true);
       setTimeout(() => setShowComingSoonAlert(false), 3000);
@@ -434,37 +459,39 @@ const ProgramsSection = () => {
               {/* Modal Content */}
               <div className="max-h-[70vh] overflow-y-auto p-6">
                 {/* Full Description */}
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-slate-900 mb-3">
-                    About This Program
-                  </h4>
-                  <p className="text-slate-600 leading-relaxed">
-                    {selectedProgram.fullDescription}
-                  </p>
-                </div>
+                {selectedProgram.fullDescription && (
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-slate-900 mb-3">
+                      About This Program
+                    </h4>
+                    <p className="text-slate-600 leading-relaxed">
+                      {selectedProgram.fullDescription}
+                    </p>
+                  </div>
+                )}
 
                 {/* Curriculum Phases */}
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-blue-600" />
-                    Complete Curriculum
-                  </h4>
-                  <div className="space-y-4">
-                    {selectedProgram.phases?.map(
-                      (phase: any, phaseIndex: number) => (
-                        <div
-                          key={phaseIndex}
-                          className="border border-slate-200 rounded-lg overflow-hidden"
-                        >
-                          <div className="bg-slate-50 p-4 border-b border-slate-200">
-                            <h5 className="font-semibold text-slate-800">
-                              {phase.title}
-                            </h5>
-                          </div>
-                          <div className="p-4">
-                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                              {phase.modules.map(
-                                (module: string, moduleIndex: number) => (
+                {selectedProgram.phases &&
+                  selectedProgram.phases.length > 0 && (
+                    <div className="mb-6">
+                      <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <BookOpen className="w-5 h-5 text-blue-600" />
+                        Complete Curriculum
+                      </h4>
+                      <div className="space-y-4">
+                        {selectedProgram.phases.map((phase, phaseIndex) => (
+                          <div
+                            key={phaseIndex}
+                            className="border border-slate-200 rounded-lg overflow-hidden"
+                          >
+                            <div className="bg-slate-50 p-4 border-b border-slate-200">
+                              <h5 className="font-semibold text-slate-800">
+                                {phase.title}
+                              </h5>
+                            </div>
+                            <div className="p-4">
+                              <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                {phase.modules.map((module, moduleIndex) => (
                                   <li
                                     key={moduleIndex}
                                     className="flex items-start gap-2 text-sm text-slate-700"
@@ -472,117 +499,127 @@ const ProgramsSection = () => {
                                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div>
                                     <span>{module}</span>
                                   </li>
-                                )
-                              )}
-                            </ul>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                 {/* Features and Outcomes Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                   {/* Features */}
-                  <div>
-                    <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-orange-500" />
-                      Program Features
-                    </h4>
-                    <div className="space-y-2">
-                      {selectedProgram.features?.map(
-                        (feature: string, index: number) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg"
-                          >
-                            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                            <span className="text-sm text-slate-700">
-                              {feature}
-                            </span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
+                  {selectedProgram.features &&
+                    selectedProgram.features.length > 0 && (
+                      <div>
+                        <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                          <Zap className="w-5 h-5 text-orange-500" />
+                          Program Features
+                        </h4>
+                        <div className="space-y-2">
+                          {selectedProgram.features.map((feature, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg"
+                            >
+                              <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                              <span className="text-sm text-slate-700">
+                                {feature}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                   {/* Learning Outcomes */}
-                  <div>
-                    <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                      <Award className="w-5 h-5 text-purple-500" />
-                      Learning Outcomes
-                    </h4>
-                    <div className="space-y-2">
-                      {selectedProgram.outcomes?.map(
-                        (outcome: string, index: number) => (
-                          <div key={index} className="flex items-center gap-3">
-                            <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                            <span className="text-sm text-slate-700">
-                              {outcome}
-                            </span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
+                  {selectedProgram.outcomes &&
+                    selectedProgram.outcomes.length > 0 && (
+                      <div>
+                        <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                          <Award className="w-5 h-5 text-purple-500" />
+                          Learning Outcomes
+                        </h4>
+                        <div className="space-y-2">
+                          {selectedProgram.outcomes.map((outcome, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-3"
+                            >
+                              <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" />
+                              <span className="text-sm text-slate-700">
+                                {outcome}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                 </div>
 
                 {/* Batch Information and Eligibility */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Batch Information */}
-                  <div className="bg-slate-50 rounded-xl p-4">
-                    <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-green-600" />
-                      Batch Information
-                    </h4>
-                    <div className="space-y-2 text-sm text-slate-700">
-                      <div className="flex justify-between">
-                        <span>Next Batch:</span>
-                        <span className="font-semibold">
-                          {selectedProgram.batchInfo?.nextBatch}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Seats Available:</span>
-                        <span className="font-semibold text-blue-600">
-                          {selectedProgram.batchInfo?.seats}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Schedule:</span>
-                        <span className="font-semibold">
-                          {selectedProgram.batchInfo?.schedule}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Mode:</span>
-                        <span className="font-semibold text-green-600">
-                          {selectedProgram.batchInfo?.mode}
-                        </span>
+                  {selectedProgram.batchInfo && (
+                    <div className="bg-slate-50 rounded-xl p-4">
+                      <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                        <Calendar className="w-5 h-5 text-green-600" />
+                        Batch Information
+                      </h4>
+                      <div className="space-y-2 text-sm text-slate-700">
+                        <div className="flex justify-between">
+                          <span>Next Batch:</span>
+                          <span className="font-semibold">
+                            {selectedProgram.batchInfo.nextBatch}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Seats Available:</span>
+                          <span className="font-semibold text-blue-600">
+                            {selectedProgram.batchInfo.seats}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Schedule:</span>
+                          <span className="font-semibold">
+                            {selectedProgram.batchInfo.schedule}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Mode:</span>
+                          <span className="font-semibold text-green-600">
+                            {selectedProgram.batchInfo.mode}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Eligibility */}
-                  <div>
-                    <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                      <UserCheck className="w-5 h-5 text-blue-600" />
-                      Eligibility
-                    </h4>
-                    <div className="space-y-2">
-                      {selectedProgram.eligibility?.map(
-                        (item: string, index: number) => (
-                          <div key={index} className="flex items-center gap-3">
-                            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                            <span className="text-sm text-slate-700">
-                              {item}
-                            </span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
+                  {selectedProgram.eligibility &&
+                    selectedProgram.eligibility.length > 0 && (
+                      <div>
+                        <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                          <UserCheck className="w-5 h-5 text-blue-600" />
+                          Eligibility
+                        </h4>
+                        <div className="space-y-2">
+                          {selectedProgram.eligibility.map((item, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-3"
+                            >
+                              <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                              <span className="text-sm text-slate-700">
+                                {item}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                 </div>
 
                 {/* CTA Buttons */}

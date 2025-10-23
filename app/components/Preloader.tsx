@@ -10,7 +10,7 @@ const Preloader = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 5000); // 5 seconds total
+    }, 2000); // 5 seconds total
 
     return () => clearTimeout(timer);
   }, []);
@@ -101,7 +101,7 @@ const Preloader = () => {
                 opacity: [0.3, 0.6, 0.3],
               }}
               transition={{
-                duration: 3,
+                duration: 2,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -187,7 +187,7 @@ const Preloader = () => {
             className="absolute bottom-16 sm:bottom-20 md:bottom-24 text-center px-2"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2, duration: 1 }}
+            transition={{ delay: 0, duration: 1 }}
           >
             <motion.h1
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent tracking-tight leading-tight sm:leading-normal"
@@ -210,7 +210,7 @@ const Preloader = () => {
               className="mt-2 sm:mt-3 md:mt-4 text-cyan-200/80 text-xs sm:text-sm md:text-base lg:text-lg font-light tracking-wider max-w-xs sm:max-w-none mx-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 2.5, duration: 0.8 }}
+              transition={{ delay: 1, duration: 0.8 }}
             >
               The Future of Intelligence
             </motion.p>
